@@ -43,7 +43,7 @@ It is recommended to setup a factory for each of your apps resources.
 This enables you to access your resources in any controller or service and enhance your resources to match your requirements. 
 
     var myApp = angular.module('myApp', ['nive'])
-        .factory('Persons', function(NiveDataStorageFactory) {
+        .factory('People', function(NiveDataStorageFactory) {
             
             var people = NiveDataStorageFactory({resource: 'people'});
             
