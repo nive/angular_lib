@@ -1,0 +1,4 @@
+.idea
+vendor/angular
+vendor/angular-mocks
+node_modules
