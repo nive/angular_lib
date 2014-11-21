@@ -186,7 +186,7 @@ angular.module('nive.services').factory('NiveFileHostFactory', function(NiveAPI)
     /**
      * FileHost Class
      *
-     * @param {string|Object} options Options passed to constructor, should at least hace a name
+     * @param {string|Object} options Options passed to constructor, should at least have a resource name
      * @constructor
      */
     FileHost = function FileHost(options) {
@@ -201,7 +201,7 @@ angular.module('nive.services').factory('NiveFileHostFactory', function(NiveAPI)
     * @returns {FileHost} - new FileHost instance
     */
     FileHost.factory = function(options) {
-        return new FileHost(options);
+        return new FileHost(angular.isString(options)? {resource: options} : options);
     };
 
     FileHost.prototype = {
@@ -229,23 +229,15 @@ angular.module('nive.services').factory('NiveFileHostFactory', function(NiveAPI)
                 values = {path: values};
             }
 
-            return NiveAPI.get(this.options('name'), '@list', values, this.options());
+            return NiveAPI.get(this.options('resource'), '@list', values, this.options());
         },
 
-        details: function(values) {
+        getItem: function(values) {
             if(angular.isString(values)) {
                 values = {path: values};
             }
 
-            return NiveAPI.get(this.options('name'), '@details', values, this.options());
-        },
-
-        properties: function(values) {
-            if(angular.isString(values)) {
-                values = {path: values};
-            }
-
-            return NiveAPI.get(this.options('name'), '@properties', values, this.options());
+            return NiveAPI.get(this.options('resource'), '@getItem', values, this.options());
         }
     };
 
