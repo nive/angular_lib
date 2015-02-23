@@ -26,11 +26,15 @@ angular.module('nive.services').provider('NiveUser', function() {
     this.$get = function(NiveAPI) {
 
         return {
-            signIn: function(params) {
+            token: function(params) {
+                return NiveAPI.post(options.resource, 'token', params, options);
+            },
+
+            signin: function(params) {
                 return NiveAPI.post(options.resource, 'signin', params, options);
             },
 
-            signOut: function() {
+            signout: function() {
                return NiveAPI.get(options.resource, 'signout', null, options);
             },
 
@@ -59,7 +63,7 @@ angular.module('nive.services').provider('NiveUser', function() {
             },
 
             signup: function(params) {
-                return NiveAPI.get(options.resource, 'signup', params, options);
+                return NiveAPI.post(options.resource, 'signup', params, options);
             },
 
             signup2: function(params) {
@@ -67,15 +71,15 @@ angular.module('nive.services').provider('NiveUser', function() {
                     params = {token: params};
                 }
 
-                return NiveAPI.get(options.resource, 'signup2', params, options);
+                return NiveAPI.post(options.resource, 'signup2', params, options);
             },
 
             update: function(params) {
-                return NiveAPI.get(options.resource, 'update', params, options);
+                return NiveAPI.post(options.resource, 'update', params, options);
             },
 
             updatePassword: function(params) {
-                return NiveAPI.get(options.resource, 'updatePassword', params, options);
+                return NiveAPI.post(options.resource, 'updatePassword', params, options);
             },
 
             updateEmail: function(params) {
@@ -83,7 +87,7 @@ angular.module('nive.services').provider('NiveUser', function() {
                     params = {email: params};
                 }
 
-                return NiveAPI.get(options.resource, 'updateEmail', params, options);
+                return NiveAPI.post(options.resource, 'updateEmail', params, options);
             },
 
             updateEmail2: function(params) {
@@ -91,7 +95,7 @@ angular.module('nive.services').provider('NiveUser', function() {
                     params = {token: params};
                 }
 
-                return NiveAPI.get(options.resource, 'updateEmail2', params, options);
+                return NiveAPI.post(options.resource, 'updateEmail2', params, options);
             },
 
             resetPassword: function(params) {
@@ -99,11 +103,11 @@ angular.module('nive.services').provider('NiveUser', function() {
                     params = {identity: params};
                 }
 
-                return NiveAPI.get(options.resource, 'resetPassword', params, options);
+                return NiveAPI.post(options.resource, 'resetPassword', params, options);
             },
 
             resetPassword2: function(params) {
-                return NiveAPI.get(options.resource, 'resetPassword2', params, options);
+                return NiveAPI.post(options.resource, 'resetPassword2', params, options);
             }
         };
     };

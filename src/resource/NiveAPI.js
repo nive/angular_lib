@@ -55,13 +55,19 @@ angular.module('nive.resource').provider('NiveAPI', function() {
                         name: resource,
                         method: remoteMethod
                     }, apiOptions || {}));
+                    // collect additional headers
+                    var headers = {};
+                    if(apiOptions.token) {
+                        headers['x-auth-token'] = apiOptions.token;
+                    }
 
                     var request = $http({
                         method: httpMethod,
                         url: url,
                         data: params,
                         params: 'GET' === httpMethod? params : '',
-                        responseType: 'json'
+                        responseType: 'json',
+                        headers: headers
                     });
 
                     return request.then(successHandler, errorHandler);

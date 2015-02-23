@@ -1,7 +1,7 @@
 {
   "name": "angular-nive",
   "private": true,
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "An angular provider for using Nive Application Cloud",
   "homepage": "http://www.nive.co",
   "license": "MIT",
