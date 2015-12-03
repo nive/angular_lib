@@ -1,9 +1,9 @@
 {
-  "name": "angular-nive",
+  "name": "nive-angular",
   "private": true,
-  "version": "0.7.1",
-  "description": "An angular provider for using Nive Application Cloud",
-  "homepage": "http://www.nive.co",
+  "version": "0.8.3",
+  "description": "Angular wapper for nive.io cloud framework",
+  "homepage": "http://nive.io",
   "license": "MIT",
   "author": "Michael Rutzer <m.rutzer@diepartments.de> (http://www.diepartments.de)",
   "devDependencies": {
@@ -14,7 +14,7 @@
     "gulp-eslint": "^0.1.8",
     "gulp-git": "^0.5.3",
     "gulp-header": "^1.1.1",
-    "gulp-load-plugins": "^0.7.0",
+    "gulp-load-plugins": "^1.1.0",
     "gulp-ng-annotate": "^0.3.3",
     "gulp-rename": "^1.2.0",
     "gulp-uglify": "^1.0.1",

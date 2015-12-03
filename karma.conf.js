@@ -6,11 +6,10 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['jasmine'],
         files: [
-            'vendor/nive/endpoint-0.7.1.js',
             'vendor/angular/angular.js',
             'vendor/angular-mocks/angular-mocks.js',
-            'dist/angular-nive-' + pkg.version + '.js',
-            'test/**/*.spec.js'
+            'dist/nive-angular-' + pkg.version + '.js',
+            'test/**/test_*.js'
         ],
         reporters: ['dots'],
         autoWatch: false,
@@ -18,4 +17,4 @@ module.exports = function(config) {
         logLevel: config.LOG_INFO,
         browsers: ['PhantomJS']
     });
-}
+};

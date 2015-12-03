@@ -1,16 +1,15 @@
 #AngularNive
 
-AngularNive is the officially supported AngularJS binding for Nive. Nive is a cloud based backend service, so you don`t need your own server for angular apps. AngularNive provides you with useful services allowing you to keep your $scope in sync with your Nive backend easily.
+AngularNive is the officially supported AngularJS binding for Nive. Nive is a cloud based backend service, so you don`t need 
+your own server for angular apps. AngularNive provides you with useful services allowing you to keep your $scope in sync with your 
+Nive backend easily.
 
 ##Installation
-AngularNive depends on nive-endpoint, a small helper library for building Api requests.Therefore you need to make sure nive-endpoint is loaded before angular-nive.
 ```html
-<script src="/vendor/nive/endpoint-0.7.1.js"></script>
 <script src="/vendor/angular/angular.js"></script>
-<script src="/vendor/angular-nive/angular-nive-0.7.0.js"></script>
+<script src="/vendor/angular-nive/angular-nive-0.8.1.js"></script>
 <script src="app.js"></script>
 ```
-Nive-endpoint might be included directly in angular-nive in the future for your convenience.
     
 **Bower coming soon!**
 
@@ -20,10 +19,10 @@ AngularNive requires Nive to sync data. [Sign up for your Nive account](http://w
 Require 'nive' in your Angular App and you can use the included services as any Angular service.
 ```javascript
 var myApp = angular.module('myApp', ['nive'])
-    .controller('MyCtrl', function($scope, NiveUser, NiveDataStorageFactory) {
+    .controller('MyCtrl', function($scope, NiveUser, NiveKvStoreFactory) {
         
         // create a storage resource
-        var myResource = NiveDataStorageFactory({resource: 'my-resource'});
+        var myResource = NiveKvStoreFactory({resource: 'my-resource'});
         
         // check for authentication
         NiveUser.authenticated().then(function(response) {
@@ -46,9 +45,9 @@ This enables you to access your resources in any controller or service and enhan
 
 ```javascript
 var myApp = angular.module('myApp', ['nive'])
-    .factory('People', function(NiveDataStorageFactory) {
+    .factory('People', function(NiveKvStoreFactory) {
         
-        var people = NiveDataStorageFactory({resource: 'people'});
+        var people = NiveKvStoreFactory({resource: 'people'});
         
         // add some methods to match peoples requirements
         people.isNice = function(person) {
@@ -57,8 +56,8 @@ var myApp = angular.module('myApp', ['nive'])
         
         return people;
     })
-    .factory('Company', function(NiveDataStorageFactory) {
-        return NiveDataStorageFactory({resource: 'company'});
+    .factory('Company', function(NiveKvStoreFactory) {
+        return NiveKvStoreFactory({resource: 'company'});
     })
     .controller('FirstCtrl', function($scope, People, Company) {
         People.getItem({id:3}).then(function(response) {
@@ -73,5 +72,5 @@ var myApp = angular.module('myApp', ['nive'])
 ```
 
 ##Documentation
-[See Nive service Api docs for full list of available methods](http://devmaster.niveapps.com/docs/webapi/index.html)
+[See Nive service Api docs for full list of available methods](http://www.nive.co/docs/webapi/index.html)
 

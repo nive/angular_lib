@@ -1,17 +1,19 @@
+
+(function () {
 'use strict';
+
 var gulp = require('gulp'),
     plugins = require('gulp-load-plugins')({
         replaceString: /\bgulp[\-.]/
     }),
     pkg = require('./package.json'),
-    banner = ['/**',
-        ' * (c) 2013-<%= now.getFullYear() %> Nive GmbH - www.nive.co',
-        ' * ',
-        ' * <%= pkg.name %> v<%= pkg.version %>',
-        ' * <%= pkg.homepage %>',
-        ' * ',
-        ' * License: <%= pkg.license %>',
-        ' */',
+    banner = ['// (c) 2013-<%= now.getFullYear() %> Nive GmbH - nive.io',
+        '// ',
+        '// <%= pkg.name %> v<%= pkg.version %>',
+        '// ',
+        '// License: Released under MIT-License. See http://jquery.org/license',
+        '// Docs: http://www.nive.co/docs/webapi',
+        '//',
         ''].join('\n');
 
 // -------------------------
@@ -38,8 +40,8 @@ gulp.task('lint', function() {
 });
 
 gulp.task('scripts', function() {
-    gulp.src(['./src/angular-nive.js', './src/**/*.js'])
-        .pipe(plugins.concat('angular-nive-' + pkg.version + '.js'))
+    gulp.src(['./src/nive.js', './src/resource/endpoint.js', './src/resource/adapter.js', './src/services/*.js'])
+        .pipe(plugins.concat('nive-angular-' + pkg.version + '.js'))
         .pipe(plugins.header(banner, {
             pkg: pkg,
             now: new Date()
@@ -70,3 +72,5 @@ gulp.task('watch', ['lint', 'scripts'], function () {
 gulp.task('default', ['clean'], function() {
     gulp.start('watch');
 });
+
+}());

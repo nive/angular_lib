@@ -1,48 +1,29 @@
-// (c) 2013-2014 Nive GmbH - www.nive.co
+// (c) 2013-2015 Nive GmbH - nive.io
 // This file is released under the MIT-License. See http://jquery.org/license
 //
 // Nive api endpoint url construction
-// ----------------------------------
-// Documentation: http://www.nive.co/docs/webapi/endpoints.html
+// Docs: http://www.nive.co/docs/webapi/endpoint.html
 //
 // Requires <nothing>
 
-'use strict';
 
 window.nive = window.nive || {};
 nive.endpoint = nive.endpoint || {};
 (function () {
-
-nive.endpoint.apiUrl = function (options) {
-    /* values: method, name, domain, path, secure, relative, outpost */
-    options = options||{};
-    return nive.endpoint.__makeUrl(options,true);
-};
-
-nive.endpoint.widgetUrl = function (options) {
-    /* values: method, name, domain, path, secure, outpost */
-    options = options||{};
-    options.version = 'widgets';
-    return nive.endpoint.__makeUrl(options);
-};
-
-nive.endpoint.EndpointException = function (message) {
-    this.message = message;
-    this.name = 'EndpointException';
-};
+'use strict';
 
 
-nive.endpoint.__makeUrl = function (options) {
-    /* values: method, name, domain, path, secure, outpost */
+nive.endpoint.makeUrl = function (options, path) {
+    /*
+     options: method, service, domain, path, secure, version
+     path: additional relative path to be used in services with tree like structures
+    * */
     options = options||{};
     var defaultDomain = '.nive.io';
-    var defaultOutpost = 'http://127.0.0.1:5556';
-    var domainPlaceholder = '__domain';
-    var devmodePrefix = '__proxy';
+    var protocol = 'https';
 
     // protocol
-    var protocol = options.protocol || document.location.protocol;
-    if(options.secure) { protocol = 'https:'; }
+    if(options.secure==false) { protocol = 'http:'; }
     else if(protocol.indexOf(':')!=protocol.length-1) { protocol += ':'; }
 
     // domain
@@ -58,16 +39,16 @@ nive.endpoint.__makeUrl = function (options) {
     // method
     var method = options.method;
 
-    // outpost development proxy
-    var outpost = options.outpost || defaultOutpost;
-    var devmode = window.location.href.indexOf(outpost)==0?9:0;
-
-    // base path
-    var path = options.path;
-    if(path) {
+    // construct path
+    if(path||options.path) {
+        if(!path) {
+            path = options.path;
+        } else if(options.path&&!path.indexOf('/')==0) {
+            path = options.path+path;
+        }
         // relative directory
+        // this option is not supported by all services
         if(path.indexOf('./')==0||path.indexOf('../')==0) {
-            // not supported in if devmode=9
             if(path.lastIndexOf('/')!=path.length-1) { path += '/'; }
             return path + method;
         }
@@ -77,23 +58,22 @@ nive.endpoint.__makeUrl = function (options) {
     }
 
     // service name
-    if(!options.name && !options.relative) { throw 'Invalid service name'; }
-    var name = options.name||'';
+    if(!options.service && !options.path && !path) { throw 'Invalid service name'; }
+    var service = options.service||'';
 
     // make url
     var url = '';
-    if(devmode==9) {
-        if(name=='') { throw 'Service name required in development mode'; }
-        if(domain=='') { domain = domainPlaceholder; }
-        url = outpost + '/' + devmodePrefix + '/' + domain;
-    }
-    else if(domain) {
-        url = protocol + '//' + domain;
-    }
-    url += '/' + name;
+    if(domain) { url = protocol + '//' + domain; }
+    url += '/' + service;
     if(version) { url += '/'+version; }
     if(path) { url += '/'+path; }
     if(method) { url += '/'+method; }
     return url;
 };
+
+nive.endpoint.EndpointException = function (message) {
+    this.message = message;
+    this.name = 'EndpointException';
+};
+
 })();
