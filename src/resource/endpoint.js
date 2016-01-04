@@ -13,10 +13,10 @@ nive.endpoint = nive.endpoint || {};
 'use strict';
 
 
-nive.endpoint.makeUrl = function (options, path) {
+nive.endpoint.makeUrl = function (options, extendedPath) {
     /*
      options: method, service, domain, path, secure, version
-     path: additional relative path to be used in services with tree like structures
+     extendedPath: additional relative path to be used in services with tree like structures
     * */
     options = options||{};
     var defaultDomain = '.nive.io';
@@ -40,15 +40,20 @@ nive.endpoint.makeUrl = function (options, path) {
     var method = options.method;
 
     // construct path
+    var path=extendedPath;
     if(path||options.path) {
         if(!path) {
             path = options.path;
         } else if(options.path&&!path.indexOf('/')==0) {
+            if(options.path.lastIndexOf('/')!=path.length-1) { path = '/'+path; }
             path = options.path+path;
         }
         // relative directory
         // this option is not supported by all services
         if(path.indexOf('./')==0||path.indexOf('../')==0) {
+            if(!method) {
+              return path;
+            }
             if(path.lastIndexOf('/')!=path.length-1) { path += '/'; }
             return path + method;
         }
@@ -58,7 +63,7 @@ nive.endpoint.makeUrl = function (options, path) {
     }
 
     // service name
-    if(!options.service && !options.path && !path) { throw 'Invalid service name'; }
+    if(!options.service) { throw 'Invalid service name'; }
     var service = options.service||'';
 
     // make url

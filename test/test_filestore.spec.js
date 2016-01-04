@@ -153,7 +153,7 @@ describe('NiveFileStoreFactory', function() {
         spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
             params = angular.fromJson(params);
             var defer = q.defer();
-            defer.resolve({result: 1, success: [params.name]});
+            defer.resolve({result: 1});
             return defer.promise;
         });
 
@@ -166,7 +166,6 @@ describe('NiveFileStoreFactory', function() {
         rootScope.$apply();
 
         expect(result.result).toBeTruthy();
-        expect(result.success[0]).toEqual('file2.txt');
     });
 
     it('should fail to update a item', function() {
@@ -275,7 +274,7 @@ describe('NiveFileStoreFactory', function() {
         var result = null;
 
         spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
-            expect(params.name).toEqual(mocks[0].name);
+            expect(params.name).toBeUndefined();
             var defer = q.defer();
             defer.resolve(mocks[0].contents);
             return defer.promise;
@@ -476,7 +475,27 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setPermissions({name: 'file1.txt', permission: 'newItem', group: 'sys:owner'}).then(function(response) {
+        fileStore.setPermissions({name: 'file1.txt', permissions: {permission: 'newItem', group: 'sys:owner'}}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
+    it('should set multiple permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: true});
+            return defer.promise;
+        });
+
+        fileStore.setPermissions({name: 'file1.txt', permissions: [{permission: 'newItem', group: 'sys:owner'},
+                                                                   {permission: 'getItem', group: 'sys:owner'}]}).then(function(response) {
             result = response;
         });
 
@@ -495,7 +514,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setPermissions({name: 'file1.txt', permission: 'newItem', group: 'sys:owner', action: 'revoke'}).then(function(response) {
+        fileStore.setPermissions({name: 'file1.txt', permissions: {permission: 'newItem', group: 'sys:owner', action: 'revoke'}}).then(function(response) {
             result = response;
         });
 
@@ -514,7 +533,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setPermissions({name: 'file1.txt', permission: 'whatever', group: 'sys:owner'}).then(function(response) {
+        fileStore.setPermissions({name: 'file1.txt', permissions: {permission: 'whatever', group: 'sys:owner'}}).then(function(response) {
             result = response;
         });
 
