@@ -1,4 +1,4 @@
-// (c) 2013-2015 Nive GmbH - nive.io
+// (c) 2013-2016 Nive GmbH - nive.io
 // 
 // nive-angular v0.8.3
 // 
@@ -24,10 +24,10 @@ nive.endpoint = nive.endpoint || {};
 'use strict';
 
 
-nive.endpoint.makeUrl = function (options, path) {
+nive.endpoint.makeUrl = function (options, extendedPath) {
     /*
      options: method, service, domain, path, secure, version
-     path: additional relative path to be used in services with tree like structures
+     extendedPath: additional relative path to be used in services with tree like structures
     * */
     options = options||{};
     var defaultDomain = '.nive.io';
@@ -51,15 +51,20 @@ nive.endpoint.makeUrl = function (options, path) {
     var method = options.method;
 
     // construct path
+    var path=extendedPath;
     if(path||options.path) {
         if(!path) {
             path = options.path;
         } else if(options.path&&!path.indexOf('/')==0) {
+            if(options.path.lastIndexOf('/')!=path.length-1) { path = '/'+path; }
             path = options.path+path;
         }
         // relative directory
         // this option is not supported by all services
         if(path.indexOf('./')==0||path.indexOf('../')==0) {
+            if(!method) {
+              return path;
+            }
             if(path.lastIndexOf('/')!=path.length-1) { path += '/'; }
             return path + method;
         }
@@ -69,7 +74,7 @@ nive.endpoint.makeUrl = function (options, path) {
     }
 
     // service name
-    if(!options.service && !options.path && !path) { throw 'Invalid service name'; }
+    if(!options.service) { throw 'Invalid service name'; }
     var service = options.service||'';
 
     // make url
@@ -223,80 +228,150 @@ angular.module('nive.services').factory('NiveFileStoreFactory', function(NiveAPI
         },
 
         getItem: function(values) {
+            var extendedPath = null;
             // values: {name}
             if(angular.isString(values)) {
-                values = { name: values };
+                extendedPath = values;
+                values = {};
+            } else {
+                extendedPath = values.name;
+                values = {};
             }
-            return NiveAPI.post(this.options('service'), '@getItem', values, this.options());
+            return NiveAPI.post(this.options('service'), '@getItem', values, this.options(), extendedPath);
         },
 
         newItem: function(values) {
+            var extendedPath = null;
             // values: {name, contents, type, mime, header}
-            return NiveAPI.post(this.options('service'), '@newItem', values, this.options());
+            //split name into path and trailing name
+            if(values&&values.name) {
+                var pos = values.name.lastIndexOf('/');
+                if (pos > -1) {
+                    extendedPath = values.name.substr(pos + 1);
+                    values.name = values.name.substr(0, pos);
+                }
+            }
+            return NiveAPI.post(this.options('service'), '@newItem', values, this.options(), extendedPath);
         },
 
         setItem: function(values) {
+            var extendedPath = null;
             // values: {name, contents, mime, header}
-            return NiveAPI.post(this.options('service'), '@setItem', values, this.options());
+            if(values&&values.name) {
+                extendedPath = values.name;
+                values.name = null;
+            }
+            return NiveAPI.post(this.options('service'), '@setItem', values, this.options(), extendedPath);
         },
 
         removeItem: function(values) {
+            var extendedPath = null;
             // values: {name, recursive}
-            return NiveAPI.post(this.options('service'), '@removeItem', values, this.options());
+            if(values&&values.name) {
+                extendedPath = values.name;
+                values.name = null;
+            }
+            return NiveAPI.post(this.options('service'), '@removeItem', values, this.options(), extendedPath);
         },
 
         read: function(values) {
+            var extendedPath = null;
             // values: {name}
             if(angular.isString(values)) {
-                values = { name: values };
+                extendedPath = values;
+                values = {};
+            } else {
+                extendedPath = values.name;
+                values = {};
             }
-            return NiveAPI.post(this.options('service'), '@read', values, this.options());
+            return NiveAPI.post(this.options('service'), '@read', values, this.options(), extendedPath);
         },
 
         write: function(values) {
+            var extendedPath = null;
             // values: {name, contents}
-            return NiveAPI.post(this.options('service'), '@write', values, this.options());
+            if(values&&values.name) {
+                extendedPath = values.name;
+                values.name = null;
+            }
+            return NiveAPI.post(this.options('service'), '@write', values, this.options(), extendedPath);
         },
 
         move: function(values) {
+            var extendedPath = null;
             // values: {name, newpath}
-            return NiveAPI.post(this.options('service'), '@move', values, this.options());
+            if(values&&values.name) {
+                extendedPath = values.name;
+                values.name = null;
+            }
+            return NiveAPI.post(this.options('service'), '@move', values, this.options(), extendedPath);
         },
 
         list: function(values) {
+            values=values||{};
+            var extendedPath = null;
             // values: {name, type, sort, order, size, start}
-            return NiveAPI.post(this.options('service'), '@list', values, this.options());
+            if(values&&values.name) {
+                extendedPath = values.name;
+                values.name = null;
+            }
+            return NiveAPI.post(this.options('service'), '@list', values, this.options(), extendedPath);
         },
 
         allowed: function(values) {
+            var extendedPath = null;
             // values: {name, permission}
-            return NiveAPI.post(this.options('service'), '@allowed', values, this.options());
+            if(values&&values.name) {
+                extendedPath = values.name;
+                values.name = null;
+            }
+            return NiveAPI.post(this.options('service'), '@allowed', values, this.options(), extendedPath);
         },
 
         getPermissions: function(values) {
+            var extendedPath = null;
             // values: {name}
             if(angular.isString(values)) {
-                values = { name: values };
+                extendedPath = values;
+                values = {};
+            } else {
+                extendedPath = values.name;
+                values = {};
             }
-            return NiveAPI.post(this.options('service'), '@getPermissions', values, this.options());
+            return NiveAPI.post(this.options('service'), '@getPermissions', values, this.options(), extendedPath);
         },
 
         setPermissions: function(values) {
-            // values: {name, permission, group, action}
-            return NiveAPI.post(this.options('service'), '@setPermissions', values, this.options());
+            var extendedPath = null;
+            // values: {name, permissions}
+            if(values&&values.name) {
+                extendedPath = values.name;
+                values.name = null;
+            }
+            return NiveAPI.post(this.options('service'), '@setPermissions', values, this.options(), extendedPath);
         },
 
         getOwner: function(values) {
+            var extendedPath = null;
             // values: {name}
             if(angular.isString(values)) {
-                values = { name: values };
+                extendedPath = values;
+                values = {};
+            } else {
+                extendedPath = values.name;
+                values = {};
             }
-            return NiveAPI.post(this.options('service'), '@getOwner', values, this.options());
+            return NiveAPI.post(this.options('service'), '@getOwner', values, this.options(), extendedPath);
         },
 
         setOwner: function(values) {
+            var extendedPath = null;
             // values: {name, owner}
-            return NiveAPI.post(this.options('service'), '@setOwner', values, this.options());
+            if(values&&values.name) {
+                extendedPath = values.name;
+                values.name = null;
+            }
+            return NiveAPI.post(this.options('service'), '@setOwner', values, this.options(), extendedPath);
         }
     };
 
