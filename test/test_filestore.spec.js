@@ -601,4 +601,24 @@ describe('NiveFileStoreFactory', function() {
         expect(result.result).toBeFalsy();
         expect(result.messages).toBeDefined();
     });
+
+    it('should call ping', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: 1});
+            return defer.promise;
+        });
+
+        fileStore.ping().then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
 });

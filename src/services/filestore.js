@@ -194,6 +194,12 @@ angular.module('nive.services').factory('NiveFileStoreFactory', function(NiveAPI
                 values.name = null;
             }
             return NiveAPI.post(this.options('service'), '@setOwner', values, this.options(), extendedPath);
+        },
+
+        ping: function(values) {
+            var extendedPath = '/';
+            // values:
+            return NiveAPI.post(this.options('service'), '@setOwner', values, this.options(), extendedPath);
         }
     };
 
