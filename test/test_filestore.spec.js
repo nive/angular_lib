@@ -106,7 +106,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.getItem({name: mocks[0].name}).then(function(response) {
+        fileStore.getItem({path: mocks[0].name}).then(function(response) {
             result = response;
         });
 
@@ -158,7 +158,7 @@ describe('NiveFileStoreFactory', function() {
         });
 
         fileStore.setItem({
-              name: 'file2.txt', contents: 'some text', mime: 'text/plain', header: 'source=local'
+              path: 'file2.txt', contents: 'some text', mime: 'text/plain', header: 'source=local'
           }).then(function(response) {
             result = response;
         });
@@ -179,7 +179,7 @@ describe('NiveFileStoreFactory', function() {
         });
 
         fileStore.setItem({
-              name: 'file2.txt', contents: 'some text', mime: 'text/plain', header: 'source=local'
+              path: 'file2.txt', contents: 'some text', mime: 'text/plain', header: 'source=local'
           }).then(function(response) {
             result = response;
         });
@@ -200,7 +200,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.removeItem({name: 'file1.txt'}).then(function(response) {
+        fileStore.removeItem({path: 'file1.txt'}).then(function(response) {
             result = response;
         });
 
@@ -220,7 +220,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.removeItem({name: 'folder1', recursive: true}).then(function(response) {
+        fileStore.removeItem({path: 'folder1', recursive: true}).then(function(response) {
             result = response;
         });
 
@@ -240,7 +240,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.removeItem({name: 'folder1', recursive: false}).then(function(response) {
+        fileStore.removeItem({path: 'folder1', recursive: false}).then(function(response) {
             result = response;
         });
 
@@ -260,7 +260,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.read({name: mocks[0].name}).then(function(response) {
+        fileStore.read({path: mocks[0].name}).then(function(response) {
             result = response;
         });
 
@@ -274,7 +274,7 @@ describe('NiveFileStoreFactory', function() {
         var result = null;
 
         spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
-            expect(params.name).toBeUndefined();
+            expect(params.path).toBeUndefined();
             var defer = q.defer();
             defer.resolve(mocks[0].contents);
             return defer.promise;
@@ -299,7 +299,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.write({name: mocks[0].name, contents: 'Updated.'}).then(function(response) {
+        fileStore.write({path: mocks[0].name, contents: 'Updated.'}).then(function(response) {
             result = response;
         });
 
@@ -318,7 +318,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.write({name: mocks[0].name, contents: 'Updated.'}).then(function(response) {
+        fileStore.write({path: mocks[0].name, contents: 'Updated.'}).then(function(response) {
             result = response;
         });
 
@@ -338,7 +338,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.move({name: mocks[0].name, newpath: 'newfilename.txt'}).then(function(response) {
+        fileStore.move({path: mocks[0].name, newpath: 'newfilename.txt'}).then(function(response) {
             result = response;
         });
 
@@ -357,7 +357,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.move({name: mocks[0].name, newpath: '/no_folder/'}).then(function(response) {
+        fileStore.move({path: mocks[0].name, newpath: '/no_folder/'}).then(function(response) {
             result = response;
         });
 
@@ -417,7 +417,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.allowed({name: 'file1.txt', permission: 'removeItem'}).then(function(response) {
+        fileStore.allowed({path: 'file1.txt', permission: 'removeItem'}).then(function(response) {
             result = response;
         });
 
@@ -436,7 +436,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.allowed({name: 'file1.txt', permission: ['removeItem', 'write']}).then(function(response) {
+        fileStore.allowed({path: 'file1.txt', permission: ['removeItem', 'write']}).then(function(response) {
             result = response;
         });
 
@@ -456,7 +456,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.getPermissions({name: 'file1.txt'}).then(function(response) {
+        fileStore.getPermissions({path: 'file1.txt'}).then(function(response) {
             result = response;
         });
 
@@ -475,7 +475,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setPermissions({name: 'file1.txt', permissions: {permission: 'newItem', group: 'sys:owner'}}).then(function(response) {
+        fileStore.setPermissions({path: 'file1.txt', permissions: {permission: 'newItem', group: 'sys:owner'}}).then(function(response) {
             result = response;
         });
 
@@ -494,7 +494,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setPermissions({name: 'file1.txt', permissions: [{permission: 'newItem', group: 'sys:owner'},
+        fileStore.setPermissions({path: 'file1.txt', permissions: [{permission: 'newItem', group: 'sys:owner'},
                                                                    {permission: 'getItem', group: 'sys:owner'}]}).then(function(response) {
             result = response;
         });
@@ -514,7 +514,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setPermissions({name: 'file1.txt', permissions: {permission: 'newItem', group: 'sys:owner', action: 'revoke'}}).then(function(response) {
+        fileStore.setPermissions({path: 'file1.txt', permissions: {permission: 'newItem', group: 'sys:owner', action: 'revoke'}}).then(function(response) {
             result = response;
         });
 
@@ -533,7 +533,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setPermissions({name: 'file1.txt', permissions: {permission: 'whatever', group: 'sys:owner'}}).then(function(response) {
+        fileStore.setPermissions({path: 'file1.txt', permissions: {permission: 'whatever', group: 'sys:owner'}}).then(function(response) {
             result = response;
         });
 
@@ -553,7 +553,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.getOwner({name: 'file1.txt'}).then(function(response) {
+        fileStore.getOwner({path: 'file1.txt'}).then(function(response) {
             result = response;
         });
 
@@ -572,7 +572,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setOwner({name: 'file1.txt', owner: 'Test 1'}).then(function(response) {
+        fileStore.setOwner({path: 'file1.txt', owner: 'Test 1'}).then(function(response) {
             result = response;
         });
 
@@ -591,7 +591,7 @@ describe('NiveFileStoreFactory', function() {
             return defer.promise;
         });
 
-        fileStore.setOwner({name: 'file1.txt', owner: 'whatever'}).then(function(response) {
+        fileStore.setOwner({path: 'file1.txt', owner: 'whatever'}).then(function(response) {
             result = response;
         });
 

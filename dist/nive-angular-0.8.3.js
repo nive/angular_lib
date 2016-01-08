@@ -229,12 +229,12 @@ angular.module('nive.services').factory('NiveFileStoreFactory', function(NiveAPI
 
         getItem: function(values) {
             var extendedPath = null;
-            // values: {name}
+            // values: {path}
             if(angular.isString(values)) {
                 extendedPath = values;
                 values = {};
             } else {
-                extendedPath = values.name;
+                extendedPath = values.path;
                 values = {};
             }
             return NiveAPI.post(this.options('service'), '@getItem', values, this.options(), extendedPath);
@@ -242,46 +242,50 @@ angular.module('nive.services').factory('NiveFileStoreFactory', function(NiveAPI
 
         newItem: function(values) {
             var extendedPath = null;
-            // values: {name, contents, type, mime, header}
-            //split name into path and trailing name
-            if(values&&values.name) {
+            // values: {name, path, contents, type, mime, header}
+            if(values&&values.name&&!values.path) {
+                //split name into path and trailing name
                 var pos = values.name.lastIndexOf('/');
                 if (pos > -1) {
                     extendedPath = values.name.substr(pos + 1);
                     values.name = values.name.substr(0, pos);
                 }
             }
+            else if(values.path) {
+                extendedPath = values.path;
+                values.path = null;
+            }
             return NiveAPI.post(this.options('service'), '@newItem', values, this.options(), extendedPath);
         },
 
         setItem: function(values) {
             var extendedPath = null;
-            // values: {name, contents, mime, header}
-            if(values&&values.name) {
-                extendedPath = values.name;
-                values.name = null;
+            // values: {path, contents, mime, header}
+            if(values&&values.path) {
+                extendedPath = values.path;
+                values.path = null;
             }
             return NiveAPI.post(this.options('service'), '@setItem', values, this.options(), extendedPath);
         },
 
         removeItem: function(values) {
             var extendedPath = null;
-            // values: {name, recursive}
-            if(values&&values.name) {
-                extendedPath = values.name;
-                values.name = null;
+            // values: {path, recursive}
+            if(values&&values.path) {
+                extendedPath = values.path;
+                values.path = null;
             }
             return NiveAPI.post(this.options('service'), '@removeItem', values, this.options(), extendedPath);
         },
 
         read: function(values) {
             var extendedPath = null;
-            // values: {name}
+            // values: {path}
             if(angular.isString(values)) {
                 extendedPath = values;
                 values = {};
             } else {
-                extendedPath = values.name;
+                extendedPath = values.path;
                 values = {};
             }
             return NiveAPI.post(this.options('service'), '@read', values, this.options(), extendedPath);
@@ -289,20 +293,20 @@ angular.module('nive.services').factory('NiveFileStoreFactory', function(NiveAPI
 
         write: function(values) {
             var extendedPath = null;
-            // values: {name, contents}
-            if(values&&values.name) {
-                extendedPath = values.name;
-                values.name = null;
+            // values: {path, contents}
+            if(values&&values.path) {
+                extendedPath = values.path;
+                values.path = null;
             }
             return NiveAPI.post(this.options('service'), '@write', values, this.options(), extendedPath);
         },
 
         move: function(values) {
             var extendedPath = null;
-            // values: {name, newpath}
-            if(values&&values.name) {
-                extendedPath = values.name;
-                values.name = null;
+            // values: {path, newpath}
+            if(values&&values.path) {
+                extendedPath = values.path;
+                values.path = null;
             }
             return NiveAPI.post(this.options('service'), '@move', values, this.options(), extendedPath);
         },
@@ -310,32 +314,32 @@ angular.module('nive.services').factory('NiveFileStoreFactory', function(NiveAPI
         list: function(values) {
             values=values||{};
             var extendedPath = null;
-            // values: {name, type, sort, order, size, start}
-            if(values&&values.name) {
-                extendedPath = values.name;
-                values.name = null;
+            // values: {path, type, sort, order, size, start}
+            if(values&&values.path) {
+                extendedPath = values.path;
+                values.path = null;
             }
             return NiveAPI.post(this.options('service'), '@list', values, this.options(), extendedPath);
         },
 
         allowed: function(values) {
             var extendedPath = null;
-            // values: {name, permission}
-            if(values&&values.name) {
-                extendedPath = values.name;
-                values.name = null;
+            // values: {path, permission}
+            if(values&&values.path) {
+                extendedPath = values.path;
+                values.path = null;
             }
             return NiveAPI.post(this.options('service'), '@allowed', values, this.options(), extendedPath);
         },
 
         getPermissions: function(values) {
             var extendedPath = null;
-            // values: {name}
+            // values: {path}
             if(angular.isString(values)) {
                 extendedPath = values;
                 values = {};
             } else {
-                extendedPath = values.name;
+                extendedPath = values.path;
                 values = {};
             }
             return NiveAPI.post(this.options('service'), '@getPermissions', values, this.options(), extendedPath);
@@ -343,22 +347,22 @@ angular.module('nive.services').factory('NiveFileStoreFactory', function(NiveAPI
 
         setPermissions: function(values) {
             var extendedPath = null;
-            // values: {name, permissions}
-            if(values&&values.name) {
-                extendedPath = values.name;
-                values.name = null;
+            // values: {path, permissions}
+            if(values&&values.path) {
+                extendedPath = values.path;
+                values.path = null;
             }
             return NiveAPI.post(this.options('service'), '@setPermissions', values, this.options(), extendedPath);
         },
 
         getOwner: function(values) {
             var extendedPath = null;
-            // values: {name}
+            // values: {path}
             if(angular.isString(values)) {
                 extendedPath = values;
                 values = {};
             } else {
-                extendedPath = values.name;
+                extendedPath = values.path;
                 values = {};
             }
             return NiveAPI.post(this.options('service'), '@getOwner', values, this.options(), extendedPath);
@@ -366,10 +370,10 @@ angular.module('nive.services').factory('NiveFileStoreFactory', function(NiveAPI
 
         setOwner: function(values) {
             var extendedPath = null;
-            // values: {name, owner}
-            if(values&&values.name) {
-                extendedPath = values.name;
-                values.name = null;
+            // values: {path, owner}
+            if(values&&values.path) {
+                extendedPath = values.path;
+                values.path = null;
             }
             return NiveAPI.post(this.options('service'), '@setOwner', values, this.options(), extendedPath);
         },
