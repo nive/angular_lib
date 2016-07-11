@@ -1,7 +1,7 @@
 {
   "name": "nive-angular",
   "private": true,
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Angular wapper for nive.io cloud framework",
   "homepage": "http://nive.io",
   "license": "MIT",

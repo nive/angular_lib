@@ -57,7 +57,7 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('unit', function() {
+gulp.task('test', function() {
 
     var karma = require('karma').server;
     karma.start({
