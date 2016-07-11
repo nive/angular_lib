@@ -163,11 +163,11 @@ angular.module('nive.services').factory('NiveUserFactory', function(NiveAPI) {
             return NiveAPI.post(this.options('service'), 'signupUid', values, this.options());
         },
 
-        signupConfirm: function(values) {
+        activate: function(values) {
             if(angular.isString(values)) {
                 values = {token: values};
             }
-            return NiveAPI.post(this.options('service'), 'signupConfirm', values, this.options());
+            return NiveAPI.post(this.options('service'), 'activate', values, this.options());
         },
         review: function(values) {
             return NiveAPI.post(this.options('service'), 'review', values, this.options());
