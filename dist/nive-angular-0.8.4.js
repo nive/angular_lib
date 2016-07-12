@@ -475,9 +475,29 @@ angular.module('nive.services').factory('NiveKvStoreFactory', function(NiveAPI) 
         list: function(values) {
             return NiveAPI.post(this.options('service'), 'list', values, this.options());
         },
-
         keys: function(values) {
             return NiveAPI.post(this.options('service'), 'keys', values, this.options());
+        },
+
+        allowed: function(values) {
+            return NiveAPI.post(this.options('service'), 'allowed', values, this.options());
+        },
+
+        getPermissions: function(values) {
+            return NiveAPI.post(this.options('service'), 'getPermissions', values, this.options());
+        },
+        setPermissions: function(values) {
+            return NiveAPI.post(this.options('service'), 'setPermissions', values, this.options());
+        },
+        getOwner: function(values) {
+            return NiveAPI.post(this.options('service'), 'getOwner', values, this.options());
+        },
+        setOwner: function(values) {
+            return NiveAPI.post(this.options('service'), 'setOwner', values, this.options());
+        },
+
+        ping: function(values) {
+            return NiveAPI.post(this.options('service'), 'ping', values, this.options());
         }
     };
 
@@ -582,6 +602,29 @@ angular.module('nive.services').factory('NiveUserFactory', function(NiveAPI) {
             return NiveAPI.post(this.options('service'), 'authenticated', values, this.options());
         },
 
+        signupDirect: function(values) {
+            return NiveAPI.post(this.options('service'), 'signupDirect', values, this.options());
+        },
+        signupOptin: function(values) {
+            return NiveAPI.post(this.options('service'), 'signupOptin', values, this.options());
+        },
+        signupReview: function(values) {
+            return NiveAPI.post(this.options('service'), 'signupReview', values, this.options());
+        },
+        signupSendpw: function(values) {
+            return NiveAPI.post(this.options('service'), 'signupSendpw', values, this.options());
+        },
+        signupUid: function(values) {
+            return NiveAPI.post(this.options('service'), 'signupUid', values, this.options());
+        },
+
+        activate: function(values) {
+            if(angular.isString(values)) {
+                values = {token: values};
+            }
+            return NiveAPI.post(this.options('service'), 'activate', values, this.options());
+        },
+
         update: function(values) {
             return NiveAPI.post(this.options('service'), 'update', values, this.options());
         },
@@ -629,35 +672,19 @@ angular.module('nive.services').factory('NiveUserFactory', function(NiveAPI) {
         disable: function(values) {
             return NiveAPI.post(this.options('service'), 'disable', values, this.options());
         },
-
         delete: function(values) {
             return NiveAPI.post(this.options('service'), 'delete', values, this.options());
         },
 
-        signupDirect: function(values) {
-            return NiveAPI.post(this.options('service'), 'signupDirect', values, this.options());
-        },
-        signupOptin: function(values) {
-            return NiveAPI.post(this.options('service'), 'signupOptin', values, this.options());
-        },
-        signupReview: function(values) {
-            return NiveAPI.post(this.options('service'), 'signupReview', values, this.options());
-        },
-        signupSendpw: function(values) {
-            return NiveAPI.post(this.options('service'), 'signupSendpw', values, this.options());
-        },
-        signupUid: function(values) {
-            return NiveAPI.post(this.options('service'), 'signupUid', values, this.options());
-        },
-
-        activate: function(values) {
-            if(angular.isString(values)) {
-                values = {token: values};
-            }
-            return NiveAPI.post(this.options('service'), 'activate', values, this.options());
-        },
         review: function(values) {
             return NiveAPI.post(this.options('service'), 'review', values, this.options());
+        },
+
+        list: function(values) {
+            return NiveAPI.post(this.options('service'), 'list', values, this.options());
+        },
+        identities: function(values) {
+            return NiveAPI.post(this.options('service'), 'identities', values, this.options());
         },
 
         getUser: function(values) {
@@ -675,8 +702,20 @@ angular.module('nive.services').factory('NiveUserFactory', function(NiveAPI) {
             }
             return NiveAPI.post(this.options('service'), 'removeUser', values, this.options());
         },
-        list: function(values) {
-            return NiveAPI.post(this.options('service'), 'list', values, this.options());
+
+        allowed: function(values) {
+            return NiveAPI.post(this.options('service'), 'allowed', values, this.options());
+        },
+
+        getPermissions: function(values) {
+            return NiveAPI.post(this.options('service'), 'getPermissions', values, this.options());
+        },
+        setPermissions: function(values) {
+            return NiveAPI.post(this.options('service'), 'setPermissions', values, this.options());
+        },
+
+        ping: function(values) {
+            return NiveAPI.post(this.options('service'), 'ping', values, this.options());
         }
     };
 

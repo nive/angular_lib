@@ -84,9 +84,29 @@ angular.module('nive.services').factory('NiveKvStoreFactory', function(NiveAPI) 
         list: function(values) {
             return NiveAPI.post(this.options('service'), 'list', values, this.options());
         },
-
         keys: function(values) {
             return NiveAPI.post(this.options('service'), 'keys', values, this.options());
+        },
+
+        allowed: function(values) {
+            return NiveAPI.post(this.options('service'), 'allowed', values, this.options());
+        },
+
+        getPermissions: function(values) {
+            return NiveAPI.post(this.options('service'), 'getPermissions', values, this.options());
+        },
+        setPermissions: function(values) {
+            return NiveAPI.post(this.options('service'), 'setPermissions', values, this.options());
+        },
+        getOwner: function(values) {
+            return NiveAPI.post(this.options('service'), 'getOwner', values, this.options());
+        },
+        setOwner: function(values) {
+            return NiveAPI.post(this.options('service'), 'setOwner', values, this.options());
+        },
+
+        ping: function(values) {
+            return NiveAPI.post(this.options('service'), 'ping', values, this.options());
         }
     };
 

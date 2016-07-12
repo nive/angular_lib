@@ -297,4 +297,217 @@ describe('NiveKvStorageFactory', function() {
         expect(result.keys[0]).toEqual(KEY);
     });
 
+    it('should show access allowed', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({removeItem: true});
+            return defer.promise;
+        });
+
+        kvStore.allowed({permission: 'removeItem'}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result['removeItem']).toBeTruthy();
+    });
+
+    it('should show multiple access allowed', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({removeItem: false, setItem: true});
+            return defer.promise;
+        });
+
+        kvStore.allowed({permission: ['removeItem', 'setItem']}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result['removeItem']).toBeFalsy();
+        expect(result['setItem']).toBeTruthy();
+    });
+
+    it('should show permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve([['newItem', ['sys:authenticated']], ['getItem', ['sys:owner','admins']]]);
+            return defer.promise;
+        });
+
+        kvStore.getPermissions({}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.length).toBeTruthy();
+    });
+
+    it('should set permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: true});
+            return defer.promise;
+        });
+
+        kvStore.setPermissions({permissions: {permission: 'newItem', group: 'sys:owner'}}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
+    it('should set multiple permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: true});
+            return defer.promise;
+        });
+
+        kvStore.setPermissions({permissions: [{permission: 'newItem', group: 'sys:owner'},
+                                              {permission: 'getItem', group: 'sys:owner'}]}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
+    it('should set permissions revoke', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: true});
+            return defer.promise;
+        });
+
+        kvStore.setPermissions({permissions: {permission: 'newItem', group: 'sys:owner', action: 'revoke'}}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
+    it('should fail to set permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: false, messages: ['unknown_permission']});
+            return defer.promise;
+        });
+
+        kvStore.setPermissions({permissions: {permission: 'whatever', group: 'sys:owner'}}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeFalsy();
+        expect(result.messages).toBeDefined();
+    });
+
+    it('should show owner', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({owner: 'Test'});
+            return defer.promise;
+        });
+
+        kvStore.getOwner({key: KEY}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.owner).toEqual('Test');
+    });
+
+    it('should set owner', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: true});
+            return defer.promise;
+        });
+
+        kvStore.setOwner({key: KEY, owner: 'Test 1'}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
+    it('should fail to set owner', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: false, messages: ['unknown_user']});
+            return defer.promise;
+        });
+
+        kvStore.setOwner({key: KEY, owner: 'whatever'}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeFalsy();
+        expect(result.messages).toBeDefined();
+    });
+
+    it('should call ping', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: 1});
+            return defer.promise;
+        });
+
+        kvStore.ping().then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
 });

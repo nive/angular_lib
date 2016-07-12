@@ -997,4 +997,203 @@ describe('NiveUser', function() {
         expect(result.size).toEqual(20);
     });
 
+    it('should list user identities', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({users: [{name: 'Test', reference: '12345678'}],
+                           start: 1, size: 20});
+            return defer.promise;
+        });
+
+        user.identities().then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result.users.length).toEqual(1);
+        expect(result.users[0].name).toEqual('Test');
+        expect(result.start).toEqual(1);
+        expect(result.size).toEqual(20);
+    });
+
+    it('should list selected user identities', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({users: [{name: 'Test', reference: '12345678'}],
+                           start: 1, size: 20});
+            return defer.promise;
+        });
+
+        user.identities({active: false, pending: true, start: 1}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result.users.length).toEqual(1);
+        expect(result.users[0].name).toEqual('Test');
+        expect(result.start).toEqual(1);
+        expect(result.size).toEqual(20);
+    });
+
+    it('should show access allowed', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({delete: true});
+            return defer.promise;
+        });
+
+        user.allowed({permission: 'delete'}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result['delete']).toBeTruthy();
+    });
+
+    it('should show multiple access allowed', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({delete: false, update: true});
+            return defer.promise;
+        });
+
+        user.allowed({permission: ['delete', 'update']}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result['delete']).toBeFalsy();
+        expect(result['update']).toBeTruthy();
+    });
+
+    it('should show permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve([['update', ['sys:authenticated']], ['list', ['admins']]]);
+            return defer.promise;
+        });
+
+        user.getPermissions({}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.length).toBeTruthy();
+    });
+
+    it('should set permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: true});
+            return defer.promise;
+        });
+
+        user.setPermissions({permissions: {permission: 'update', group: 'sys:noone'}}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
+    it('should set multiple permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: true});
+            return defer.promise;
+        });
+
+        user.setPermissions({permissions: [{permission: 'signupDirect', group: 'sys:noone'},
+                                           {permission: 'update', group: 'sys:owner'}]}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
+    it('should set permissions revoke', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: true});
+            return defer.promise;
+        });
+
+        user.setPermissions({permissions: {permission: 'activate', group: 'sys:authenticated', action: 'revoke'}}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
+    it('should fail to set permissions', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: false, messages: ['unknown_permission']});
+            return defer.promise;
+        });
+
+        user.setPermissions({permissions: {permission: 'whatever', group: 'sys:authenticated'}}).then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeFalsy();
+        expect(result.messages).toBeDefined();
+    });
+
+    it('should call ping', function() {
+        var result = null;
+
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
+            var defer = q.defer();
+            defer.resolve({result: 1});
+            return defer.promise;
+        });
+
+        user.ping().then(function(response) {
+            result = response;
+        });
+
+        rootScope.$apply();
+
+        expect(result).not.toBeNull();
+        expect(result.result).toBeTruthy();
+    });
+
 });
