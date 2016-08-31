@@ -1,5 +1,5 @@
 // Nive KeyValueStore Angular wrapper
-// Docs: http://www.nive.co/docs/webapi/kvstore.html#api
+// Docs: http://www.nive.co/docs/webapi/datastore.html#api
 
 (function () {
 'use strict';

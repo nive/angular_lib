@@ -1,6 +1,6 @@
 {
   "name": "angular-nive",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "description": "An angular provider for using Nive Cloud Framework",
   "keywords": [
     "angular",
