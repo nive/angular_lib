@@ -4,32 +4,32 @@
 (function () {
 'use strict';
 
-angular.module('nive.services').factory('NiveKvStoreFactory', function(NiveAPI) {
+angular.module('nive.services').factory('NiveDataStoreFactory', function(NiveAPI) {
 
     var __options = {};
 
     /**
-     * KvStore
+     * DataStore
      *
      * @param {string|Object} options Options passed to constructor, should at least have a service name
      * @constructor
      */
-    var KvStore = function KvStore(options) {
+    var DataStore = function DataStore(options) {
         this.options(options);
     };
 
     /**
-     * Factory method for creating a new KvStore instance
+     * Factory method for creating a new DataStore instance
      *
      * @param {string|Object} options - Options passed to constructor
      * @static
-     * @returns {KvStore} new instance
+     * @returns {DataStore} new instance
      */
-    KvStore.factory = function(options) {
-        return new KvStore(angular.isString(options)? {service: options} : options);
+    DataStore.factory = function(options) {
+        return new DataStore(angular.isString(options)? {service: options} : options);
     };
 
-    KvStore.prototype = {
+    DataStore.prototype = {
 
         options: function(option, value) {
 
@@ -110,7 +110,7 @@ angular.module('nive.services').factory('NiveKvStoreFactory', function(NiveAPI) 
         }
     };
 
-    return KvStore.factory;
+    return DataStore.factory;
 });
 
 })();

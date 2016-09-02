@@ -20,30 +20,30 @@ describe('NiveKvStorageFactory', function() {
             }
         ];
 
-    var q, niveKvStoreFactory, niveApi, kvStore, rootScope;
+    var q, niveDataStoreFactory, niveApi, kvStore, rootScope;
 
     beforeEach(module("nive.services"));
 
     beforeEach(function() {
 
-        inject(function(_NiveKvStoreFactory_, NiveAPI, $q, $rootScope) {
-            niveKvStoreFactory = _NiveKvStoreFactory_;
+        inject(function(_NiveDataStoreFactory_, NiveAPI, $q, $rootScope) {
+            niveDataStoreFactory = _NiveDataStoreFactory_;
             niveApi = NiveAPI;
             q = $q;
             rootScope = $rootScope;
         });
 
-        kvStore = niveKvStoreFactory({service: SERVICE});
+        kvStore = niveDataStoreFactory({service: SERVICE});
     });
 
     it('new instance', function() {
-        var instance = niveKvStoreFactory({service: SERVICE});
+        var instance = niveDataStoreFactory({service: SERVICE});
         expect(instance.options('service')).toEqual(SERVICE);
 
-        instance = niveKvStoreFactory(SERVICE);
+        instance = niveDataStoreFactory(SERVICE);
         expect(instance.options('service')).toEqual(SERVICE);
 
-        instance = niveKvStoreFactory({service: SERVICE, token: '123456'});
+        instance = niveDataStoreFactory({service: SERVICE, token: '123456'});
         expect(instance.options('token')).toEqual('123456');
     });
 

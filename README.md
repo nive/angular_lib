@@ -19,10 +19,10 @@ AngularNive requires Nive to sync data. [Sign up for your Nive account](http://w
 Require 'nive' in your Angular App and you can use the included services as any Angular service.
 ```javascript
 var myApp = angular.module('myApp', ['nive'])
-    .controller('MyCtrl', function($scope, NiveUser, NiveKvStoreFactory) {
+    .controller('MyCtrl', function($scope, NiveUser, NiveDataStoreFactory) {
         
         // create a storage resource
-        var myResource = NiveKvStoreFactory({resource: 'my-resource'});
+        var myResource = NiveDataStoreFactory({resource: 'my-resource'});
         
         // check for authentication
         NiveUser.authenticated().then(function(response) {
@@ -45,9 +45,9 @@ This enables you to access your resources in any controller or service and enhan
 
 ```javascript
 var myApp = angular.module('myApp', ['nive'])
-    .factory('People', function(NiveKvStoreFactory) {
+    .factory('People', function(NiveDataStoreFactory) {
         
-        var people = NiveKvStoreFactory({resource: 'people'});
+        var people = NiveDataStoreFactory({resource: 'people'});
         
         // add some methods to match peoples requirements
         people.isNice = function(person) {
@@ -56,8 +56,8 @@ var myApp = angular.module('myApp', ['nive'])
         
         return people;
     })
-    .factory('Company', function(NiveKvStoreFactory) {
-        return NiveKvStoreFactory({resource: 'company'});
+    .factory('Company', function(NiveDataStoreFactory) {
+        return NiveDataStoreFactory({resource: 'company'});
     })
     .controller('FirstCtrl', function($scope, People, Company) {
         People.getItem({id:3}).then(function(response) {
