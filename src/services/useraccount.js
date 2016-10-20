@@ -66,7 +66,7 @@ angular.module('nive.services').factory('NiveUserFactory', function(NiveAPI) {
         },
 
         signout: function() {
-           var result = NiveAPI.get(this.options('service'), 'signout', null, this.options());
+           var result = NiveAPI.post(this.options('service'), 'signout', null, this.options());
             if(this.options('token')) {
                 // remove token from user instance if set
                 this.options('token', null);
