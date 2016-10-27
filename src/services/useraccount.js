@@ -1,5 +1,5 @@
 // Nive User Account Service Angular wrapper
-// Docs: http://www.nive.co/docs/webapi/useraccount.html#api
+// Docs: http://www.nive.co/docs/webapi/userstore.html#api
 
 (function () {
 'use strict';

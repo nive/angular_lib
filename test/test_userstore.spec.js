@@ -102,7 +102,7 @@ describe('NiveUser', function() {
     it('should signout', function() {
         var result = null;
 
-        spyOn(niveApi, 'get').and.callFake(function(resource, remoteMethod, params) {
+        spyOn(niveApi, 'post').and.callFake(function(resource, remoteMethod, params) {
             var defer = q.defer();
             defer.resolve({result: true});
             return defer.promise;
