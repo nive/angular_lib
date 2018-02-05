@@ -14,7 +14,7 @@ Nive backend easily.
 **Bower coming soon!**
 
 ##Getting started with AngularNive
-AngularNive requires Nive to sync data. [Sign up for your Nive account](http://www.nive.co/workspace/account/signup)
+AngularNive requires Nive to sync data. [Sign up for your Nive account](http://www.nive.co/workspace)
 
 Require 'nive' in your Angular App and you can use the included services as any Angular service.
 ```javascript
